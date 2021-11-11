@@ -1,6 +1,51 @@
 import { useState } from "react"
 
-const list = [
+
+const List = ({list}) => {
+  console.log('List render')
+  
+  return (
+    <ul>
+    {list.map(item => {
+      return (
+        <Item key={item.objectID} item={item}/>
+    )})}
+    </ul>
+  )
+}
+
+const Item = ({item}) => {
+  console.log('Item render')
+  return (
+    <li>
+      <span><a href={item.url} >{item.title}</a></span>
+      <span>{item.author}</span>
+      <span>{item.num_comments}</span>
+      <span>{item.points}</span>
+    </li>
+  )
+}
+const Search = ({onSearch}) => {
+  const [searchTerm, setSearchTerm] = useState('')
+
+  const handleChange = (e) => {
+    setSearchTerm(e.target.value)
+    onSearch(e)
+  }
+  console.log('Saerch render')
+  return(
+    <div>
+      <label htmlFor="search">Search:</label>
+      <input type="search" name="search" id="search"  onChange={handleChange}/>
+
+      <p>Searching for <strong>{searchTerm}</strong></p>
+    </div>
+  )
+}
+
+const App = () => {
+
+const stories = [
   {
     title:'React',
     url:'https://reactjs.org/',
@@ -18,48 +63,18 @@ const list = [
     objectID:1,
   }
 ]
-
-const List = () => {
-  return (
-    <ul>
-    {list.map(item => {
-      return (
-        <li key={item.objectID}>
-          <span><a href={item.url} >{item.title}</a></span>
-          <span>{item.author}</span>
-          <span>{item.num_comments}</span>
-          <span>{item.points}</span>
-
-        </li>
-      )
-    })}
-    </ul>
-  )
+const handleSearch = (event) => {
+  console.log(event.target.value)
 }
 
-const Search = () => {
-  const [data, setData] = useState('')
-
-  const handleChange = (e) => {
-    console.log(e.target.value)
-  }
-
-  return(
-    <div>
-      <label htmlFor="search">Search:</label>
-      <input type="search" name="search" id="search"  onChange={handleChange}/>
-    </div>
-  )
-}
-
-const App = () => {
+console.log('App renders')
   return (
     <div>
       <h1>My hacker stories</h1>
-      <Search />
+      <Search onSearch={handleSearch}/>
       <hr />
-      <List />
-      <List />
+      <List list={stories}/>
+      <List list={stories}/>
 
     </div>
   );
